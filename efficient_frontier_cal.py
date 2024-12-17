@@ -156,8 +156,8 @@ def plot_efficient_frontier_and_cal(frontier_risks, frontier_returns, tangent_ri
 if __name__ == "__main__":
     # User input: Tickers and Date range
     tickers = ['3081.TWO', '3357.TWO', '3491.TWO', '3711.TW', '4958.TW', '6279.TWO', '6290.TWO', '8069.TWO']  # Example assets
-    start_date = '2023-01-01'
-    end_date = '2024-01-01'
+    start_date = '2024-6-20'
+    end_date = '2024-09-20'
     annual_risk_free_rate = 0.017  # Annualized risk-free rate
     daily_risk_free_rate = (1 + annual_risk_free_rate) ** (1 / 252) - 1  # Convert to daily risk-free rate
 
