@@ -63,9 +63,9 @@ def fetch_and_calculate(ticker_symbols, start_date, end_date):
 # Example usage
 if __name__ == "__main__":
     # Define the list of ticker symbols and the date range
-    tickers = ["^TWII", "2330.TW", "2317.TW"]  # Example: TAIEX, TSMC, Foxconn
-    start = "2024-09-20"
-    end = "2024-11-12"
+    tickers = ['3081.TWO', '3357.TWO', '3491.TWO', '3711.TW', '4958.TW', '6279.TWO', '6290.TWO', '8069.TWO']  # Use Yahoo Finance Label
+    start = "2023-09-20"
+    end = "2024-09-20"
 
     # Fetch last prices and calculate metrics
     results = fetch_and_calculate(tickers, start, end)
