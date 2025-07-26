@@ -2,26 +2,6 @@ import yfinance as yf
 import pandas as pd
 
 def fetch_and_calculate(ticker_symbols, start_date, end_date):
-    """
-    Fetches daily last prices for multiple specified stocks and calculates:
-    (1) Daily return rates
-    (2) Expected daily return rates
-    (3) Daily return rate standard deviations
-    (4) Covariance matrix of daily return rates
-    
-    Parameters:
-        ticker_symbols (list): A list of stock ticker symbols (e.g., ['^TWII', '2330.TW']).
-        start_date (str): Start date in the format 'YYYY-MM-DD'.
-        end_date (str): End date in the format 'YYYY-MM-DD'.
-    
-    Returns:
-        dict: Contains:
-            - 'last_prices': DataFrame of last prices
-            - 'daily_returns': DataFrame of daily return rates
-            - 'expected_daily_return': Series of expected daily return rates
-            - 'std_daily_return': Series of daily return rate standard deviations
-            - 'cov_matrix': DataFrame of covariance matrix
-    """
     # Fetch last prices for all tickers
     all_data = pd.DataFrame()
     for ticker in ticker_symbols:
@@ -63,9 +43,9 @@ def fetch_and_calculate(ticker_symbols, start_date, end_date):
 # Example usage
 if __name__ == "__main__":
     # Define the list of ticker symbols and the date range
-    tickers = ['3081.TWO', '3357.TWO', '3491.TWO', '3711.TW', '4958.TW', '6279.TWO', '6290.TWO', '8069.TWO']  # Use Yahoo Finance Label
-    start = "2023-09-20"
-    end = "2024-09-20"
+    tickers = ['3081.TWO', '3357.TWO', '3491.TWO', '3711.TW', '4958.TW', '6279.TWO', '6290.TWO', '8069.TWO']  # 使用 yahoo finance 代號
+    start = "2023-09-20" # 起始日期
+    end = "2024-09-20" # 結束日期
 
     # Fetch last prices and calculate metrics
     results = fetch_and_calculate(tickers, start, end)
@@ -90,4 +70,4 @@ if __name__ == "__main__":
         # Save to CSV (optional)
         results["last_prices"].to_csv("last_prices.csv")
         results["daily_returns"].to_csv("daily_returns.csv")
-        results["cov_matrix"].to_csv("covariance_matrix.csv")
+        # results["cov_matrix"].to_csv("covariance_matrix.csv")

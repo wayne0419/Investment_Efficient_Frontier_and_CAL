@@ -5,60 +5,19 @@ import yfinance as yf
 from scipy.optimize import minimize
 
 def get_asset_data(tickers, start_date, end_date):
-    """
-    Fetch historical price data for specified assets.
-
-    Parameters:
-    - tickers: List of asset ticker symbols.
-    - start_date: Start date for the data.
-    - end_date: End date for the data.
-
-    Returns:
-    - A DataFrame of daily adjusted close prices.
-    """
     data = yf.download(tickers, start=start_date, end=end_date)['Adj Close']
     return data
 
 def calculate_daily_returns(price_data):
-    """
-    Calculate daily returns from adjusted close prices.
-
-    Parameters:
-    - price_data: A DataFrame of asset prices.
-
-    Returns:
-    - A DataFrame of daily returns.
-    """
     daily_returns = price_data.pct_change().dropna()
     return daily_returns
 
 def calculate_portfolio_performance(weights, mean_returns, cov_matrix):
-    """
-    Calculate portfolio return and risk (standard deviation).
-
-    Parameters:
-    - weights: A list of portfolio weights.
-    - mean_returns: Mean returns of the assets.
-    - cov_matrix: Covariance matrix of asset returns.
-
-    Returns:
-    - Portfolio return and portfolio risk (std dev).
-    """
     portfolio_return = np.dot(weights, mean_returns)
     portfolio_risk = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
     return portfolio_return, portfolio_risk
 
 def min_variance(mean_returns, cov_matrix):
-    """
-    Calculate the minimum variance portfolio with no short selling.
-
-    Parameters:
-    - mean_returns: Mean returns of the assets.
-    - cov_matrix: Covariance matrix of asset returns.
-
-    Returns:
-    - Weights of the minimum variance portfolio.
-    """
     num_assets = len(mean_returns)
     args = (cov_matrix)
     constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
@@ -68,17 +27,6 @@ def min_variance(mean_returns, cov_matrix):
     return result.x
 
 def efficient_frontier(mean_returns, cov_matrix, target_returns):
-    """
-    Generate the efficient frontier portfolios with no short selling.
-
-    Parameters:
-    - mean_returns: Mean returns of the assets.
-    - cov_matrix: Covariance matrix of asset returns.
-    - target_returns: Array of target returns for efficient portfolios.
-
-    Returns:
-    - A tuple of risks and returns for efficient portfolios.
-    """
     num_assets = len(mean_returns)
     risks = []
     returns = []
@@ -97,17 +45,6 @@ def efficient_frontier(mean_returns, cov_matrix, target_returns):
     return risks, returns
 
 def calculate_tangent_portfolio(mean_returns, cov_matrix, risk_free_rate):
-    """
-    Calculate the tangent portfolio with no short selling.
-
-    Parameters:
-    - mean_returns: Mean returns of the assets.
-    - cov_matrix: Covariance matrix of asset returns.
-    - risk_free_rate: Daily risk-free rate.
-
-    Returns:
-    - Tangent portfolio weights, return, and risk.
-    """
     excess_returns = mean_returns - risk_free_rate
     num_assets = len(mean_returns)
     bounds = tuple((0, 1) for _ in range(num_assets))
@@ -119,19 +56,6 @@ def calculate_tangent_portfolio(mean_returns, cov_matrix, risk_free_rate):
     return weights, portfolio_return, portfolio_risk
 
 def plot_efficient_frontier_and_cal(frontier_risks, frontier_returns, tangent_risk, tangent_return, risk_free_rate, asset_risks, asset_returns, tickers):
-    """
-    Plot the efficient frontier with the Capital Allocation Line (CAL).
-
-    Parameters:
-    - frontier_risks: Risks of the efficient frontier portfolios.
-    - frontier_returns: Returns of the efficient frontier portfolios.
-    - tangent_risk: Risk of the tangent portfolio.
-    - tangent_return: Return of the tangent portfolio.
-    - risk_free_rate: Risk-free rate for the CAL.
-    - asset_risks: Risks (std deviations) of individual assets.
-    - asset_returns: Mean returns of individual assets.
-    - tickers: List of asset ticker symbols.
-    """
     # CAL line
     cal_x = np.linspace(0, max(frontier_risks), 100)
     cal_y = risk_free_rate + (tangent_return - risk_free_rate) / tangent_risk * cal_x
@@ -155,10 +79,10 @@ def plot_efficient_frontier_and_cal(frontier_risks, frontier_returns, tangent_ri
 
 if __name__ == "__main__":
     # User input: Tickers and Date range
-    tickers = ['3081.TWO', '3357.TWO', '3491.TWO', '3711.TW', '4958.TW', '6279.TWO', '6290.TWO', '8069.TWO']  # Example assets
-    start_date = '2024-06-20'
-    end_date = '2024-09-20'
-    annual_risk_free_rate = 0.017  # Annualized risk-free rate
+    tickers = ['3081.TWO', '3357.TWO', '3491.TWO', '3711.TW', '4958.TW', '6279.TWO', '6290.TWO', '8069.TWO']  # 使用 yahoo finance 代號
+    start_date = '2023-09-20'   # 起始日期
+    end_date = '2024-09-20'     # 結束日期
+    annual_risk_free_rate = 0.017  # 無風險利率(年)
     daily_risk_free_rate = (1 + annual_risk_free_rate) ** (1 / 252) - 1  # Convert to daily risk-free rate
 
     # Step 1: Fetch price data
